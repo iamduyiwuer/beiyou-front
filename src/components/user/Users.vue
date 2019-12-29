@@ -288,8 +288,8 @@ export default {
         if (res.meta.status !== 200) {
           return this.$message.error('修改用户失败')
         }
-        this.getUserList()
         this.$message.success('修改用户成功')
+        this.getUserList()
         this.editDialogVisble = false
       })
     },
