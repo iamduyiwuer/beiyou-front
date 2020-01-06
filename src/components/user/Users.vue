@@ -31,9 +31,9 @@
         <el-table-column label="邮箱" prop="email"></el-table-column>
         <el-table-column label="电话" prop="mobile"></el-table-column>
         <el-table-column label="角色" prop="role_name"></el-table-column>
-        <el-table-column label="状态" prop="mg_state">
+        <el-table-column label="状态" prop="state">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.mg_state" @change="userStateChanged(scope.row)">
+            <el-switch v-model="scope.row.state" @change="userStateChanged(scope.row)">
             </el-switch>
           </template>
         </el-table-column>
@@ -133,7 +133,7 @@
             <el-option
               v-for="item in roleList"
               :key="item.id"
-              :label="item.roleName"
+              :label="item.role_name"
               :value="item.id">
             </el-option>
           </el-select>
@@ -152,6 +152,7 @@ export default {
   data () {
     // 验证邮箱的规则
     var checkEmail = (rule, value, cb) => {
+      if (!value) cb()
       const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.([a-zA-Z0-9_-]))+/
       if (regEmail.test(value)) {
         return cb()
@@ -160,6 +161,7 @@ export default {
     }
     // 验证手机号的规则
     var checkMobile = (rule, value, cb) => {
+      if (!value) cb()
       const regMobile = /^(0|86|17951)?(13[0-9]|15[0123456789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
       if (regMobile.test(value)) {
         return cb()
@@ -198,11 +200,12 @@ export default {
           { min: 5, max: 15, message: '长度在 5 到 15 个字符', trigger: 'blur' }
         ],
         email: [
-          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          // { required: false, message: '请输入邮箱', trigger: 'blur' },
+          { required: false },
           { validator: checkEmail, trigger: 'blur' }
         ],
         mobile: [
-          { required: true, message: '请输入电话', trigger: 'blur' },
+          { required: false, message: '请输入电话', trigger: 'blur' },
           { validator: checkMobile, trigger: 'blur' }
         ]
       },
@@ -236,13 +239,14 @@ export default {
       this.queryInfo.pagenum = newPage
       this.getUserList()
     },
-    // 监听 switch 开关状态改变
+    // 监听 switch 开关状态改变事件
     async userStateChanged (userInfo) {
       const { data: res } = await this.$http.put(
-        `users/${userInfo.id}/state/${userInfo.mg_state}`
+        // `users/${userInfo.id}/state/${userInfo.mg_state}`
+        `users/state`, { id: userInfo.id, state: userInfo.state }
       )
       if (res.meta.status !== 200) {
-        userInfo.mg_state = !userInfo.mg_state
+        userInfo.state = !userInfo.state
         return this.$message.error('更新用户状态失败！')
       }
       this.$message.success('更新用户状态成功！')
@@ -256,8 +260,8 @@ export default {
         if (!valid) return
         // 可以发起添加用户的网络请求
         const { data: res } = await this.$http.post('users', this.addForm)
-        if (res.meta.status !== 201) {
-          this.$message.error('添加用户失败！  ')
+        if (res.meta.status !== 200) {
+          return this.$message.error('添加用户失败！  ')
         }
         this.$message.success('添加用户成功！')
         // 隐藏用户添加对话框
@@ -267,7 +271,7 @@ export default {
     },
     // 展示编辑用户的对话框
     async showEditDialog (id) {
-      const { data: res } = await this.$http.get('users/' + id)
+      const { data: res } = await this.$http.get('users/detail/' + id)
       if (res.meta.status !== 200) {
         return this.$message.error('查询用户信息失败')
       }
@@ -280,8 +284,9 @@ export default {
     editUser () {
       this.$refs.editFormRef.validate(async valid => {
         if (!valid) return
-        const { data: res } = await this.$http.put('users/' + this.editForm.id,
+        const { data: res } = await this.$http.put('users',
           {
+            id: this.editForm.id,
             email: this.editForm.email,
             mobile: this.editForm.mobile
           })
@@ -329,7 +334,11 @@ export default {
       if (!this.selectedRoleId) {
         return this.$message.error('请选择要分配的角色')
       }
-      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, { rid: this.selectedRoleId })
+      const { data: res } = await this.$http.put(`users/role`,
+        {
+          id: this.userInfo.id,
+          role_id: this.selectedRoleId
+        })
       if (res.meta.status !== 200) {
         return this.$message.error('更新角色失败')
       }

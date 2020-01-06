@@ -3,8 +3,8 @@
       <!-- 头部区域 -->
       <el-header>
         <div>
-          <img src="../assets/homelogo.png" alt="">
-          <span>测试开发系统</span>
+<!--          <img src="../assets/homelogo.png" alt="">-->
+          <span>监测系统开发版本</span>
         </div>
         <el-button type="info" @click="logout">退出</el-button></el-header>
       <!-- 主题区域 -->
@@ -28,7 +28,7 @@
                 <!-- 图标 -->
                 <i :class="iconsObj[item.id]"></i>
                 <!-- 文本 -->
-                <span>{{item.authName}}</span>
+                <span>{{item.auth_name}}</span>
               </template>
               <!-- 二级菜单 -->
               <el-menu-item
@@ -40,7 +40,7 @@
                   <!-- 图标 -->
                   <i class="el-icon-menu"></i>
                   <!-- 文本 -->
-                  <span>{{ subItem.authName }}</span>
+                  <span>{{ subItem.auth_name }}</span>
                 </template>
               </el-menu-item>
             </el-submenu>
