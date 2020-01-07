@@ -62,11 +62,11 @@ export default {
     return {
       menuList: [],
       iconsObj: {
-        '125': 'iconfont icon-user',
-        '103': 'iconfont icon-tijikongjian',
-        '101': 'iconfont icon-shangpin',
-        '102': 'iconfont icon-danju',
-        '145': 'iconfont icon-baobiao'
+        '125': 'iconfont icon-user', // 用户管理
+        '103': 'iconfont icon-lock_fill', // 权限管理
+        '127': 'iconfont icon-tijikongjian', // 数据中心
+        '102': 'iconfont icon-danju', // 订单管理
+        '145': 'iconfont icon-baobiao' // 报表
       },
       // 是否折叠
       isCollapse: false,

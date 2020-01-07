@@ -6,6 +6,8 @@ import HomeIndex from '../components/Index'
 import Users from '../components/user/Users'
 import Rights from '../components/power/Rights'
 import Roles from '../components/power/Roles'
+import Realtime from '../components/data_hub/Realtime'
+import History from '../components/data_hub/History'
 
 Vue.use(VueRouter)
 
@@ -46,10 +48,17 @@ const routes = [
       {
         path: '/roles',
         component: Roles
+      },
+      {
+        path: '/realtime',
+        component: Realtime
+      },
+      {
+        path: '/history',
+        component: History
       }
     ]
   }
-
 ]
 
 const router = new VueRouter({
