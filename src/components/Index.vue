@@ -1,21 +1,28 @@
 <template>
   <div>
-    <div id="myChart" :style="{width: '800px', height: '500px'}"></div>
-    <div id="myChartq" :style="{width: '800px', height: '500px'}"></div>
+    <div id="haha"></div>
+<!--    <div id="heatmap" style=" width:700px; height: 400px;">-->
+    <div id="heatmap">
+<!--      <img src="../assets/index.png" id="bg" style="width:100%; height: 100%">-->
+      <img src="../assets/index.png" id="bg">
+<!--      <svg width="100%" height="100%" version="1.1"-->
+<!--           xmlns="http://www.w3.org/2000/svg">-->
+
+<!--        &lt;!&ndash; circle是圆形标签 &ndash;&gt;-->
+<!--        <circle cx="70" cy="50" r="40" stroke="black"-->
+<!--                stroke-width="2" fill="red"/>-->
+<!--        &lt;!&ndash; rect是长方形标签 &ndash;&gt;-->
+<!--        <rect x='120' width="100" height="100"-->
+<!--              style="fill:rgb(0,0,255);stroke-width:1;-->
+<!--stroke:rgb(0,0,0)"/>-->
+<!--      </svg>-->
+      <span class="test3">绝对定位</span>
+    </div>
   </div>
 </template>
 <script>
-// 引入基本模板
-let echarts = require('echarts/lib/echarts')
-// 引入柱状图组件
-require('echarts/lib/chart/bar')
-require('echarts/lib/chart/line')
-// 引入提示框和title组件
-require('echarts/lib/component/tooltip')
-require('echarts/lib/component/title')
-require('echarts/lib/component/legend')
-// require('echarts/lib/component/grid')
-// require('echarts/lib/component/toolbox')
+import Heatmap from 'heatmap.js'
+
 export default {
   data () {
     return {
@@ -23,98 +30,70 @@ export default {
     }
   },
   mounted () {
-    this.drawLine()
-    this.drawLineq()
+    this.pic()
   },
   methods: {
-    drawLine () {
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(document.getElementById('myChart'))
-      // 绘制图表
-      myChart.setOption({
-        title: { text: '在Vue中使用echarts' },
-        tooltip: {},
-        xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
-        series: [{
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        }]
+    pic () {
+      // 创建一个heatmap实例对象
+      // 这里直接指定热点图渲染的div了.heatmap支持自定义的样式方案,网页外包接活具体可看官网api
+      var heatmapInstance = Heatmap.create({
+        container: document.getElementById('heatmap')
       })
-    },
-    drawLineq () {
-      // 基于准备好的dom，初始化echarts实例
-      let myChartq = echarts.init(document.getElementById('myChartq'))
-      // 绘制图表
-      myChartq.setOption({
-        title: {
-          text: ''
-        },
-        tooltip: {
-          trigger: 'axis'
-        },
-        legend: {
-          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            name: '邮件营销',
-            type: 'line',
-            stack: '总量',
-            data: [120, 132, 101, 134, 90, 230, 210]
-          },
-          {
-            name: '联盟广告',
-            type: 'line',
-            stack: '总量',
-            data: [220, 182, 191, 234, 290, 330, 310]
-          },
-          {
-            name: '视频广告',
-            type: 'line',
-            stack: '总量',
-            data: [150, 232, 201, 154, 190, 330, 410]
-          },
-          {
-            name: '直接访问',
-            type: 'line',
-            stack: '总量',
-            data: [320, 332, 301, 334, 390, 330, 320]
-          },
-          {
-            name: '搜索引擎',
-            type: 'line',
-            stack: '总量',
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
-          }
-        ]
-      })
+      // 构建一些随机数据点,网页切图价格这里替换成你的业务数据
+      var points = [
+        { x: 700, y: 70, value: 33 },
+        { x: 700, y: 90, value: 33 }
+      ]
+      // var max = 0
+      // var width = 600
+      // var height = 400
+      // var len = 50
+      // while (len--) {
+      //   var val = Math.floor(Math.random() * 100)
+      //   max = Math.max(max, val)
+      //   var point = {
+      //     x: Math.floor(Math.random() * width),
+      //     y: Math.floor(Math.random() * height),
+      //     value: val
+      //   }
+      //   points.push(point)
+      // }
+      console.log(points)
+      var data = {
+        max: 2,
+        data: points
+      }
+      // 因为data是一组数据,web切图报价所以直接setData
+      heatmapInstance.setData(data)
     }
   }
 }
 </script>
 <style>
+  #heatmap {
+    width: 1300px;
+    height: 600px;
+  }
+  /*#bg {*/
+  /*  width:100%;*/
+  /*  height: 100%;*/
+  /*  background-size:cover;*/
+  /*}*/
+  #bg {
+    /*width:1300px;*/
+    width:1300px;
+    height:620px;
+    /*height:420px;*/
+    float:right;
+    padding-bottom: 0;
+    background-color:green;
+    position:relative;
+  }
+  .test3 {
+    position:absolute;
+    left:500px;
+    top:50px;
+    color:#FFF;
+  }
 
 </style>

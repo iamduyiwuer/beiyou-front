@@ -4,7 +4,7 @@
       <el-header>
         <div>
 <!--          <img src="../assets/homelogo.png" alt="">-->
-          <span>监测系统开发版本</span>
+          <span>管理</span>
         </div>
         <el-button type="info" @click="logout">退出</el-button></el-header>
       <!-- 主题区域 -->
