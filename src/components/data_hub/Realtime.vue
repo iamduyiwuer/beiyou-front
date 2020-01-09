@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-box">
     <el-row :gutter="20">
       <el-col :span="8"><div id="air_temperature" :style="{width: '300px', height: '300px'}"></div></el-col>
       <el-col :span="8"><div id="air_humidity" :style="{width: '300px', height: '300px'}"></div></el-col>

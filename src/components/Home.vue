@@ -21,6 +21,14 @@
             :collapse="isCollapse"
             :collapse-transition="false"
             :router="true" :default-active="activePath">
+            <el-menu-item :index="'/'+'index'" @click="saveNavState('/index')">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-s-home"></i>
+                <!-- 文本 -->
+                <span>首页</span>
+              </template>
+            </el-menu-item>
             <!-- 一级菜单 -->
             <el-submenu :index="item.id + ''" v-for="item in menuList" :key="item.id">
               <!-- 一级菜单的模板区 -->
@@ -47,7 +55,7 @@
           </el-menu>
         </el-aside>
         <!-- 右侧内容主体 -->
-        <el-main>
+        <el-main id="main-box">
           <!-- 路由占位符 -->
           <router-view></router-view>
         </el-main>
@@ -130,6 +138,7 @@ export default {
   }
   .el-main{
     background-color: #EAEDF1;
+    padding: 0;
   }
   .iconfont{
     margin-right: 10px;

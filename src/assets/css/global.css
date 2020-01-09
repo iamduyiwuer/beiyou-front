@@ -22,3 +22,6 @@ html, body, #app{
 .el-pagination {
     margin-top: 15px;
 }
+.main-box {
+    padding: 15px;
+}
