@@ -8,6 +8,7 @@ import Rights from '../components/power/Rights'
 import Roles from '../components/power/Roles'
 import Realtime from '../components/data_hub/Realtime'
 import History from '../components/data_hub/History'
+import Monitor from '../components/video/Monitor'
 
 Vue.use(VueRouter)
 
@@ -56,6 +57,10 @@ const routes = [
       {
         path: '/history',
         component: History
+      },
+      {
+        path: '/monitor',
+        component: Monitor
       }
     ]
   }

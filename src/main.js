@@ -10,6 +10,12 @@ import './assets/fonts/iconfont.css'
 // 导入全局样式表
 import './assets/css/global.css'
 
+import VideoPlayer from 'vue-video-player'
+require('video.js/dist/video-js.css')
+// require('vue-video-player/node_modules/video.js/dist/video-js.css')
+require('vue-video-player/src/custom-theme.css')
+Vue.use(VideoPlayer)
+
 // 引入echarts
 // import echarts from 'echarts'
 // Vue.prototype.$echarts = echarts

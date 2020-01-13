@@ -67,7 +67,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="less" scoped>
   .el-table .warning-row {
     background: #E6A23C;
   }
