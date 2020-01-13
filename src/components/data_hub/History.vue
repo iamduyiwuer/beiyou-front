@@ -1,51 +1,47 @@
 <template>
   <div class="main-box">
-    <div id="myChart" :style="{width: '800px', height: '500px'}"></div>
-    <div id="myChartq" :style="{width: '800px', height: '500px'}"></div>
+    <div id="myChartq" :style="{width: '100%', height: '500px'}"></div>
   </div>
 </template>
 <script>
 // 引入基本模板
 let echarts = require('echarts/lib/echarts')
 // 引入柱状图组件
-require('echarts/lib/chart/bar')
 require('echarts/lib/chart/line')
 // 引入提示框和title组件
 require('echarts/lib/component/tooltip')
 require('echarts/lib/component/title')
 require('echarts/lib/component/legend')
-// require('echarts/lib/component/grid')
-// require('echarts/lib/component/toolbox')
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      x_coordinate: [],
+      series: [],
+      legend: []
     }
   },
   mounted () {
-    this.drawLine()
-    this.drawLineq()
+    this.getHistroy()
+    // this.drawLine()
   },
   methods: {
-    drawLine () {
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(document.getElementById('myChart'))
-      // 绘制图表
-      myChart.setOption({
-        title: { text: '在Vue中使用echarts' },
-        tooltip: {},
-        xAxis: {
-          data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-        },
-        yAxis: {},
-        series: [{
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        }]
-      })
+    getlegend (key) {
+      switch (key) {
+        case 'co2':
+          return '二氧化碳'
+        case 'o2':
+          return '氧气'
+        case 'air_temperature':
+          return '空气温度'
+        case 'air_humidity':
+          return '空气湿度'
+        case 'ground_humidity':
+          return '土壤湿度'
+        case 'illumination':
+          return '光照度'
+      }
     },
-    drawLineq () {
+    drawLine () {
       // 基于准备好的dom，初始化echarts实例
       let myChartq = echarts.init(document.getElementById('myChartq'))
       // 绘制图表
@@ -57,7 +53,8 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+          data: this.legend
+          // data: ['co2', 'o2', 'air_temperature', 'air_humidity', 'ground_humidity', 'illumination']
         },
         grid: {
           left: '3%',
@@ -73,45 +70,103 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+          data: this.x_coordinate,
+          // axisLabel: {
+          //   interval: 10,
+          //   rotate: 40
+          // }
+          axisLine: { // ---坐标轴 轴线
+            show: true, // ---是否显示
+
+            // ------------------- 箭头 -------------------------
+            symbol: ['none', 'arrow'], // ---是否显示轴线箭头
+            symbolSize: [8, 8], // ---箭头大小
+            symbolOffset: [0, 7], // ---箭头位置
+
+            // ------------------- 线 -------------------------
+            lineStyle: {
+              // color: '#fff',
+              width: 1,
+              type: 'solid'
+            }
+          }
         },
         yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            name: '邮件营销',
-            type: 'line',
-            stack: '总量',
-            data: [120, 132, 101, 134, 90, 230, 210]
-          },
-          {
-            name: '联盟广告',
-            type: 'line',
-            stack: '总量',
-            data: [220, 182, 191, 234, 290, 330, 310]
-          },
-          {
-            name: '视频广告',
-            type: 'line',
-            stack: '总量',
-            data: [150, 232, 201, 154, 190, 330, 410]
-          },
-          {
-            name: '直接访问',
-            type: 'line',
-            stack: '总量',
-            data: [320, 332, 301, 334, 390, 330, 320]
-          },
-          {
-            name: '搜索引擎',
-            type: 'line',
-            stack: '总量',
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
+          type: 'value',
+          axisLine: { // ---坐标轴 轴线
+            show: true, // ---是否显示
+
+            // ------------------- 箭头 -------------------------
+            symbol: ['none', 'arrow'], // ---是否显示轴线箭头
+            symbolSize: [8, 8], // ---箭头大小
+            symbolOffset: [0, 7], // ---箭头位置
+
+            // ------------------- 线 -------------------------
+            lineStyle: {
+              // color: '#fff',
+              width: 1,
+              type: 'solid'
+            }
           }
-        ]
+        },
+        series: this.series
       })
+    },
+
+    async getHistroy () {
+      const { data: res } = await this.$http.post('data/history', {
+        'fields': ['co2', 'o2', 'air_temperature', 'air_humidity', 'ground_humidity', 'illumination'],
+        'start_time': 1578621508000,
+        'end_time': 1578624186000,
+        'period': '1m',
+        'group_func': 'MAX'
+      })
+      if (res.meta.status !== 200) return this.$message.error('获取历史数据失败')
+
+      // 获取legend字段： 折线的名称
+      // this.legend = res.data.Results[0].Series[0].columns.slice(1)
+      var tmpLegend = res.data.Results[0].Series[0].columns.slice(1)
+      for (var n = 0; n < tmpLegend.length; n++) {
+        this.legend.push(this.getlegend(tmpLegend[n]))
+      }
+
+      // 初始化series数组，设置name type和data
+      for (var m = 0; m < this.legend.length; m++) {
+        this.series.push({
+          name: this.legend[m],
+          type: 'line',
+          data: []
+        })
+      }
+
+      // 处理后端返回的数据 values数据格式如： [1578621480000, 50, 50, 23, 5, 23, 4]
+      var values = res.data.Results[0].Series[0].values
+      for (var i = 0; i < values.length; i++) {
+        // 把时间戳取出 放到X轴坐标数组中
+        // this.x_coordinate.push(values[i][0])
+        this.x_coordinate.push(this.formatDate(values[i][0]))
+
+        // 索引为0是时间戳，不要时间戳，从索引为1的位置开始取值
+        for (var k = 0; k < this.legend.length; k++) {
+          this.series[k].data.push(values[i][k + 1])
+        }
+      }
+
+      // 画折线图
+      this.drawLine()
+    },
+
+    formatDate (timestampInt) {
+      var date = new Date(timestampInt)
+      var YY = date.getFullYear() + '-'
+      var MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-'
+      var DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate())
+      var hh = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
+      var mm = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes())
+      // var ss = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
+      return YY + MM + DD + ' ' + hh + mm
     }
+
   }
 }
 </script>

@@ -1,6 +1,8 @@
 <template>
     <div id="heatmap">
-      <img src="../assets/index.png" id="img-bg">
+      <img src="../assets/index.png" id="img-bg" style="background-size: auto 100%">
+<!--      <el-image src="../assets/index.png" style="width: 1000px; height: 500px">asdf</el-image>-->
+
       <span class="n1">45℃</span>
       <span class="n2">45℃</span>
       <span class="n3">45℃</span>
@@ -30,7 +32,6 @@
 export default {
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
     }
   },
   mounted () {
@@ -41,16 +42,18 @@ export default {
 </script>
 <style>
   #heatmap {
-    width: 1336px;
-    height: 645px;
+    /*width: 1336px;*/
+    /*height: 645px;*/
     position: relative;
   }
   #img-bg {
     width:1336px;
     height:661px;
+    /*width:100%;*/
+    /*height:100%;*/
     float:right;
     padding-bottom: 0;
-    background-color:green;
+    /*background-color:green;*/
     /*position:relative;*/
   }
   .n1 {
