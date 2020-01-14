@@ -8,7 +8,9 @@ import Rights from '../components/power/Rights'
 import Roles from '../components/power/Roles'
 import Realtime from '../components/data_hub/Realtime'
 import History from '../components/data_hub/History'
-import Monitor from '../components/video/Monitor'
+import Camera from '../components/video/Camera'
+import Videos from '../components/video/Videos'
+import Server from '../components/data_hub/Server'
 
 Vue.use(VueRouter)
 
@@ -59,8 +61,16 @@ const routes = [
         component: History
       },
       {
-        path: '/monitor',
-        component: Monitor
+        path: '/camera',
+        component: Camera
+      },
+      {
+        path: '/videos',
+        component: Videos
+      },
+      {
+        path: '/server',
+        component: Server
       }
     ]
   }

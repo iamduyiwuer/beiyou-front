@@ -29,7 +29,10 @@ import {
   Tree,
   Select,
   Option,
-  Divider
+  Divider,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem
 } from 'element-ui'
 
 Vue.use(Button)
@@ -60,5 +63,8 @@ Vue.use(Tree)
 Vue.use(Select)
 Vue.use(Option)
 Vue.use(Divider)
+Vue.use(Dropdown)
+Vue.use(DropdownItem)
+Vue.use(DropdownMenu)
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox

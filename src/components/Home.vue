@@ -74,7 +74,9 @@ export default {
         '103': 'iconfont icon-lock_fill', // 权限管理
         '127': 'iconfont icon-tijikongjian', // 数据中心
         '102': 'iconfont icon-danju', // 订单管理
-        '145': 'iconfont icon-baobiao' // 报表
+        '145': 'iconfont icon-baobiao', // 报表
+        '130': 'el-icon-video-camera', // 监控视频
+        '140': 'el-icon-monitor' // 监控视频
       },
       // 是否折叠
       isCollapse: false,

@@ -12,7 +12,7 @@
       <!-- 添加角色按钮 -->
       <el-row>
         <el-col>
-          <el-button type="primary" @click="addRoleDialogVisble = true">添加角色</el-button>
+          <el-button type="primary" @click="addRoleDialogVisible = true">添加角色</el-button>
         </el-col>
       </el-row>
       <!-- 角色列表区域 -->
@@ -67,7 +67,7 @@
       <!--    添加角色对话框-->
       <el-dialog
         title="添加角色"
-        :visible.sync="addRoleDialogVisble"
+        :visible.sync="addRoleDialogVisible"
         width="50%" @close="addRoleDialogClosed">
         <!--      内容主题区-->
         <el-form :model="addRoleForm"
@@ -83,7 +83,7 @@
         </el-form>
         <!--      底部区域-->
         <span slot="footer" class="dialog-footer">
-    <el-button @click="addRoleDialogVisble = false">取 消</el-button>
+    <el-button @click="addRoleDialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="addRole">确 定</el-button>
   </span>
       </el-dialog>
@@ -149,7 +149,7 @@ export default {
       // 当前即将分配权限的角色Id
       roleId: '',
       // 添加角色对话框显示和隐藏
-      addRoleDialogVisble: false,
+      addRoleDialogVisible: false,
       // 添加角色表单
       addRoleForm: {},
       // 添加用户表单的验证规则对象
@@ -256,7 +256,7 @@ export default {
         }
         this.$message.success('添加角色成功！')
         // 隐藏角色添加对话框
-        this.addRoleDialogVisble = false
+        this.addRoleDialogVisible = false
         this.getRolesList()
       })
     },
