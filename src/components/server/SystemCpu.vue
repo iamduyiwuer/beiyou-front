@@ -1,5 +1,5 @@
 <template>
-  <div id="myChart" :style="{width: '100%', height: '500px'}"></div>
+  <div id="myChart" :style="{width: '100%', height: '300px'}"></div>
 </template>
 
 <script>
@@ -16,15 +16,21 @@ export default {
     return {
       x_coordinate: [],
       series: [],
-      legend: ['usage']
+      legend: []
     }
   },
   created () {
   },
   methods: {
     async getSystemCpu (host) {
-      const { data: res } = await this.$http.post('monitor/system/cpu', { 'field': 'usage_idle', 'dashboard_time': '1h', 'host_name': host })
-      if (res.meta.status !== 200) return this.$message.error('获取服务器列表失败')
+      this.x_coordinate = []
+      this.series = []
+      this.legend = []
+
+      const { data: res } = await this.$http.post('monitor/system/cpu', { 'field': ['usage_idle'], 'dashboard_time': '1h', 'host_name': host })
+      if (res.meta.status !== 200) return this.$message.error('获取服务器cpu数据失败')
+
+      if (res.data === null) return this.drawLine()
 
       var tmpLegend = res.data[0].columns.slice(1)
       for (var n = 0; n < tmpLegend.length; n++) {
@@ -49,7 +55,7 @@ export default {
 
         // 索引为0是时间戳，不要时间戳，从索引为1的位置开始取值
         for (var k = 0; k < this.legend.length; k++) {
-          if (typeof (values[i][k + 1]) === 'undefined') {
+          if (typeof (values[i][k + 1]) === 'undefined' || values[i][k + 1] === null || values[i][k + 1] === 0) {
             this.series[k].data.push(values[i][k + 1])
           } else {
             this.series[k].data.push(values[i][k + 1].toFixed(2))
@@ -64,6 +70,7 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       let myChart = echarts.init(document.getElementById('myChart'))
       // 绘制图表
+      myChart.clear()
       myChart.setOption({
         title: {
           text: ''
@@ -76,8 +83,8 @@ export default {
           // data: ['co2', 'o2', 'air_temperature', 'air_humidity', 'ground_humidity', 'illumination']
         },
         grid: {
-          left: '3%',
-          right: '4%',
+          left: '10%',
+          right: '10%',
           bottom: '3%',
           containLabel: true
         },

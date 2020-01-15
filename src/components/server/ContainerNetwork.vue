@@ -1,5 +1,5 @@
 <template>
-  <div id="systemMemEchars" :style="{width: '100%', height: '300px'}"></div>
+  <div id="containerNetworkEchars" :style="{width: '100%', height: '300px'}"></div>
 </template>
 
 <script>
@@ -22,12 +22,12 @@ export default {
   created () {
   },
   methods: {
-    async getSystemMem (host) {
+    async getContainerNetwork (host) {
       this.x_coordinate = []
       this.series = []
       this.legend = []
 
-      const { data: res } = await this.$http.post('monitor/system/memory', { 'field': ['used'], 'dashboard_time': '1h', 'host_name': host })
+      const { data: res } = await this.$http.post('monitor/container/network', { 'field': ['rx_bytes', 'tx_bytes'], 'dashboard_time': '1h', 'host_name': host })
       if (res.meta.status !== 200) return this.$message.error('获取服务器内存数据失败')
 
       if (res.data === null) return this.drawLine()
@@ -68,7 +68,7 @@ export default {
     },
     drawLine () {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(document.getElementById('systemMemEchars'))
+      let myChart = echarts.init(document.getElementById('containerNetworkEchars'))
       // 绘制图表
       myChart.clear()
       myChart.setOption({

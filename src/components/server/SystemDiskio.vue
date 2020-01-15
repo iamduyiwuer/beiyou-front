@@ -1,5 +1,5 @@
 <template>
-  <div id="systemMemEchars" :style="{width: '100%', height: '300px'}"></div>
+  <div id="systemDiskioEchars" :style="{width: '100%', height: '300px'}"></div>
 </template>
 
 <script>
@@ -22,13 +22,13 @@ export default {
   created () {
   },
   methods: {
-    async getSystemMem (host) {
+    async getSystemDiskio (host) {
       this.x_coordinate = []
       this.series = []
       this.legend = []
 
-      const { data: res } = await this.$http.post('monitor/system/memory', { 'field': ['used'], 'dashboard_time': '1h', 'host_name': host })
-      if (res.meta.status !== 200) return this.$message.error('获取服务器内存数据失败')
+      const { data: res } = await this.$http.post('monitor/system/diskio', { 'field': ['read_bytes', 'write_bytes'], 'dashboard_time': '1h', 'host_name': host })
+      if (res.meta.status !== 200) return this.$message.error('获取服务器硬盘读写数据失败')
 
       if (res.data === null) return this.drawLine()
 
@@ -68,7 +68,7 @@ export default {
     },
     drawLine () {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(document.getElementById('systemMemEchars'))
+      let myChart = echarts.init(document.getElementById('systemDiskioEchars'))
       // 绘制图表
       myChart.clear()
       myChart.setOption({

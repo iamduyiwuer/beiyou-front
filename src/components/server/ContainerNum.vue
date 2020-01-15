@@ -1,5 +1,5 @@
 <template>
-  <div id="systemMemEchars" :style="{width: '100%', height: '300px'}"></div>
+  <div id="containerNumEchars" :style="{width: '100%', height: '300px'}"></div>
 </template>
 
 <script>
@@ -22,12 +22,12 @@ export default {
   created () {
   },
   methods: {
-    async getSystemMem (host) {
+    async getContainerNum (host) {
       this.x_coordinate = []
       this.series = []
       this.legend = []
 
-      const { data: res } = await this.$http.post('monitor/system/memory', { 'field': ['used'], 'dashboard_time': '1h', 'host_name': host })
+      const { data: res } = await this.$http.post('monitor/container/num', { 'field': ['n_containers'], 'dashboard_time': '1h', 'host_name': host })
       if (res.meta.status !== 200) return this.$message.error('获取服务器内存数据失败')
 
       if (res.data === null) return this.drawLine()
@@ -50,7 +50,6 @@ export default {
       var values = res.data[0].values
       for (var i = 0; i < values.length; i++) {
         // 把时间戳取出 放到X轴坐标数组中
-        // this.x_coordinate.push(values[i][0])
         this.x_coordinate.push(this.formatDate(values[i][0]))
 
         // 索引为0是时间戳，不要时间戳，从索引为1的位置开始取值
@@ -68,7 +67,7 @@ export default {
     },
     drawLine () {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(document.getElementById('systemMemEchars'))
+      let myChart = echarts.init(document.getElementById('containerMemEchars'))
       // 绘制图表
       myChart.clear()
       myChart.setOption({
