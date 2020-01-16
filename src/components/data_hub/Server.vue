@@ -60,14 +60,14 @@
           </el-card>
         </el-col>
 
-<!--        <el-col :span="8">-->
-<!--          <el-card class="card-item" :body-style="{ padding: '0px' }">-->
-<!--            <systemDisk ref="SystemDisk"></systemDisk>-->
-<!--            <div style="padding: 14px; text-align: center">-->
-<!--              <span>硬盘容量</span>-->
-<!--            </div>-->
-<!--          </el-card>-->
-<!--        </el-col>-->
+        <el-col :span="8">
+          <el-card class="card-item" :body-style="{ padding: '0px' }">
+            <systemDisk ref="SystemDisk"></systemDisk>
+            <div style="padding: 14px; text-align: center">
+              <span>硬盘容量</span>
+            </div>
+          </el-card>
+        </el-col>
 
         <el-col :span="8">
           <el-card class="card-item" :body-style="{ padding: '0px' }">
@@ -96,21 +96,18 @@
           </el-card>
         </el-col>
 
-<!--        <el-col :span="8">-->
-<!--          <el-card class="card-item" :body-style="{ padding: '0px' }">-->
-<!--            <containerNetwork ref="ContainerNetwork"></containerNetwork>-->
-<!--            <div style="padding: 14px; text-align: center">-->
-<!--              <span>容器网络</span>-->
-<!--            </div>-->
-<!--          </el-card>-->
-<!--        </el-col>-->
+        <el-col :span="8">
+          <el-card class="card-item" :body-style="{ padding: '0px' }">
+            <containerNetwork ref="ContainerNetwork"></containerNetwork>
+            <div style="padding: 14px; text-align: center">
+              <span>容器网络</span>
+            </div>
+          </el-card>
+        </el-col>
 
       </el-row>
 
     </el-card>
-<!--    <containerNum ref="ContainerNum"></containerNum>-->
-    <systemDisk ref="SystemDisk"></systemDisk>
-    <containerNetwork ref="ContainerNetwork"></containerNetwork>
   </div>
 </template>
 

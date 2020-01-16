@@ -4,7 +4,7 @@
 
 <script>
 // 引入基本模板
-let echarts = require('echarts/lib/echarts')
+import echarts from 'echarts'
 // 引入柱状图组件
 require('echarts/lib/chart/line')
 // 引入提示框和title组件
@@ -27,7 +27,11 @@ export default {
       this.series = []
       this.legend = []
 
-      const { data: res } = await this.$http.post('monitor/container/cpu', { 'field': ['usage_percent'], 'dashboard_time': '1h', 'host_name': host })
+      const { data: res } = await this.$http.post('monitor/container/cpu', {
+        'field': ['usage_percent'],
+        'dashboard_time': '1h',
+        'host_name': host
+      })
       if (res.meta.status !== 200) return this.$message.error('获取服务器内存数据失败')
 
       if (res.data === null) return this.drawLine()
@@ -86,19 +90,16 @@ export default {
           trigger: 'axis'
         },
         legend: {
+          type: 'scroll',
+          left: 10,
+          right: 10,
           data: this.legend
-          // data: ['co2', 'o2', 'air_temperature', 'air_humidity', 'ground_humidity', 'illumination']
         },
         grid: {
           left: '10%',
           right: '10%',
           bottom: '3%',
           containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
         },
         xAxis: {
           type: 'category',

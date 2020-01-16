@@ -86,8 +86,10 @@ export default {
           trigger: 'axis'
         },
         legend: {
+          type: 'scroll',
+          left: 10,
+          right: 10,
           data: this.legend
-          // data: ['co2', 'o2', 'air_temperature', 'air_humidity', 'ground_humidity', 'illumination']
         },
         grid: {
           left: '10%',
@@ -95,19 +97,14 @@ export default {
           bottom: '3%',
           containLabel: true
         },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
-        },
         xAxis: {
           type: 'category',
           boundaryGap: false,
           data: this.x_coordinate,
           // axisLabel: {
           //   interval: 10,
-          //   rotate: 40
-          // }
+          //   rotate: 40,
+          // },
           axisLine: { // ---坐标轴 轴线
             show: true, // ---是否显示
 

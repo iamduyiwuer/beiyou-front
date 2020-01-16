@@ -4,7 +4,7 @@
 
 <script>
 // 引入基本模板
-let echarts = require('echarts/lib/echarts')
+import echarts from 'echarts'
 // 引入柱状图组件
 require('echarts/lib/chart/line')
 // 引入提示框和title组件
@@ -86,6 +86,9 @@ export default {
           trigger: 'axis'
         },
         legend: {
+          type: 'scroll',
+          left: 10,
+          right: 10,
           data: this.legend
         },
         grid: {
@@ -93,11 +96,6 @@ export default {
           right: '10%',
           bottom: '3%',
           containLabel: true
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {}
-          }
         },
         xAxis: {
           type: 'category',
