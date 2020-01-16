@@ -23,6 +23,7 @@
 
       <!-- echarts折线图 -->
       <el-row>
+
         <el-col :span="8">
           <el-card class="card-item" :body-style="{ padding: '0px'}">
             <systemCpu ref="SystemCpu"></systemCpu>
@@ -31,6 +32,7 @@
             </div>
           </el-card>
         </el-col>
+
         <el-col :span="8">
           <el-card class="card-item" :body-style="{ padding: '0px' }">
             <systemMem ref="SystemMem"></systemMem>
@@ -39,22 +41,7 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span="8">
-          <el-card class="card-item" :body-style="{ padding: '0px' }">
-            <systemDisk ref="SystemDisk"></systemDisk>
-            <div style="padding: 14px; text-align: center">
-              <span>硬盘容量</span>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="8">
-          <el-card class="card-item" :body-style="{ padding: '0px' }">
-            <systemDiskio ref="SystemDiskio"></systemDiskio>
-            <div style="padding: 14px; text-align: center">
-              <span>硬盘读写速率</span>
-            </div>
-          </el-card>
-        </el-col>
+
         <el-col :span="8">
           <el-card class="card-item" :body-style="{ padding: '0px' }">
             <systemLoad ref="SystemLoad"></systemLoad>
@@ -63,30 +50,7 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span="8">
-          <el-card class="card-item" :body-style="{ padding: '0px' }">
-            <containerCpu ref="ContainerCpu"></containerCpu>
-            <div style="padding: 14px; text-align: center">
-              <span>容器cpu</span>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="8">
-          <el-card class="card-item" :body-style="{ padding: '0px' }">
-            <containerMem ref="ContainerMem"></containerMem>
-            <div style="padding: 14px; text-align: center">
-              <span>容器内存</span>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="8">
-          <el-card class="card-item" :body-style="{ padding: '0px' }">
-            <containerNetwork ref="ContainerNetwork"></containerNetwork>
-            <div style="padding: 14px; text-align: center">
-              <span>容器网络</span>
-            </div>
-          </el-card>
-        </el-col>
+
         <el-col :span="8">
           <el-card class="card-item" :body-style="{ padding: '0px' }">
             <containerNum ref="ContainerNum"></containerNum>
@@ -95,10 +59,58 @@
             </div>
           </el-card>
         </el-col>
+
+<!--        <el-col :span="8">-->
+<!--          <el-card class="card-item" :body-style="{ padding: '0px' }">-->
+<!--            <systemDisk ref="SystemDisk"></systemDisk>-->
+<!--            <div style="padding: 14px; text-align: center">-->
+<!--              <span>硬盘容量</span>-->
+<!--            </div>-->
+<!--          </el-card>-->
+<!--        </el-col>-->
+
+        <el-col :span="8">
+          <el-card class="card-item" :body-style="{ padding: '0px' }">
+            <systemDiskio ref="SystemDiskio"></systemDiskio>
+            <div style="padding: 14px; text-align: center">
+              <span>硬盘读写速率</span>
+            </div>
+          </el-card>
+        </el-col>
+
+        <el-col :span="8">
+          <el-card class="card-item" :body-style="{ padding: '0px' }">
+            <containerCpu ref="ContainerCpu"></containerCpu>
+            <div style="padding: 14px; text-align: center">
+              <span>容器cpu</span>
+            </div>
+          </el-card>
+        </el-col>
+
+        <el-col :span="8">
+          <el-card class="card-item" :body-style="{ padding: '0px' }">
+            <containerMem ref="ContainerMem"></containerMem>
+            <div style="padding: 14px; text-align: center">
+              <span>容器内存</span>
+            </div>
+          </el-card>
+        </el-col>
+
+<!--        <el-col :span="8">-->
+<!--          <el-card class="card-item" :body-style="{ padding: '0px' }">-->
+<!--            <containerNetwork ref="ContainerNetwork"></containerNetwork>-->
+<!--            <div style="padding: 14px; text-align: center">-->
+<!--              <span>容器网络</span>-->
+<!--            </div>-->
+<!--          </el-card>-->
+<!--        </el-col>-->
+
       </el-row>
 
     </el-card>
-
+<!--    <containerNum ref="ContainerNum"></containerNum>-->
+    <systemDisk ref="SystemDisk"></systemDisk>
+    <containerNetwork ref="ContainerNetwork"></containerNetwork>
   </div>
 </template>
 

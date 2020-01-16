@@ -27,41 +27,59 @@ export default {
       this.series = []
       this.legend = []
 
-      const { data: res } = await this.$http.post('monitor/system/diskio', { 'field': ['read_bytes', 'write_bytes'], 'dashboard_time': '1h', 'host_name': host })
+      const { data: res } = await this.$http.post('monitor/system/diskio', {
+        'field': ['read_bytes', 'write_bytes'],
+        'dashboard_time': '1h',
+        'host_name': host
+      })
       if (res.meta.status !== 200) return this.$message.error('获取服务器硬盘读写数据失败')
 
       if (res.data === null) return this.drawLine()
 
-      var tmpLegend = res.data[0].columns.slice(1)
-      for (var n = 0; n < tmpLegend.length; n++) {
-        this.legend.push(tmpLegend[n])
-      }
+      for (var v = 0; v < res.data.length; v++) {
+        var tmpLegend = res.data[v].columns.slice(1)
+        for (var n = 0; n < tmpLegend.length; n++) {
+          this.legend.push(res.data[v].tags.name + '_' + tmpLegend[n])
+        }
 
-      // 初始化series数组，设置name type和data
-      for (var m = 0; m < this.legend.length; m++) {
-        this.series.push({
-          name: this.legend[m],
-          type: 'line',
-          data: []
-        })
-      }
+        // 初始化series数组，设置name type和data
+        var tmpSeries = []
+        for (var m = 0; m < tmpLegend.length; m++) {
+          tmpSeries.push({
+            name: res.data[v].tags.name + '_' + tmpLegend[m],
+            type: 'line',
+            data: []
+          })
+        }
 
-      // 处理后端返回的数据 values数据格式如： [1578621480000, 50, 50, 23, 5, 23, 4]
-      var values = res.data[0].values
-      for (var i = 0; i < values.length; i++) {
-        // 把时间戳取出 放到X轴坐标数组中
-        // this.x_coordinate.push(values[i][0])
-        this.x_coordinate.push(this.formatDate(values[i][0]))
+        // 处理后端返回的数据 values数据格式如： [1578621480000, 50, 50, 23, 5, 23, 4]
+        var values = res.data[v].values
+        for (var i = 0; i < values.length; i++) {
+          // 把时间戳取出 放到X轴坐标数组中
+          // this.x_coordinate.push(values[i][0])
+          if (v === 0) {
+            this.x_coordinate.push(this.formatDate(values[i][0])) // TODO: yici
+          }
 
-        // 索引为0是时间戳，不要时间戳，从索引为1的位置开始取值
-        for (var k = 0; k < this.legend.length; k++) {
-          if (typeof (values[i][k + 1]) === 'undefined' || values[i][k + 1] === null || values[i][k + 1] === 0) {
-            this.series[k].data.push(values[i][k + 1])
-          } else {
-            this.series[k].data.push(values[i][k + 1].toFixed(2))
+          // 索引为0是时间戳，不要时间戳，从索引为1的位置开始取值
+          for (var k = 0; k < tmpLegend.length; k++) {
+            if (typeof (values[i][k + 1]) === 'undefined' || values[i][k + 1] === null || values[i][k + 1] === 0) {
+              tmpSeries[k].data.push(values[i][k + 1])
+              // tmpSeries[k].data.push(Math.ceil(Math.random() * 10))
+            } else {
+              tmpSeries[k].data.push(values[i][k + 1].toFixed(2))
+              // tmpSeries[k].data.push(Math.ceil(Math.random() * 10))
+            }
           }
         }
+        for (var p = 0; p < tmpLegend.length; p++) {
+          this.series.push(tmpSeries[p])
+        }
       }
+      // var d = this.formatEcharsData.FormatEcharsData(res)
+      // this.x_coordinate = d.xCoordinate
+      // this.series = d.series
+      // this.legend = d.legend
 
       // 画折线图
       this.drawLine()

@@ -32,33 +32,41 @@ export default {
 
       if (res.data === null) return this.drawLine()
 
-      var tmpLegend = res.data[0].columns.slice(1)
-      for (var n = 0; n < tmpLegend.length; n++) {
-        this.legend.push(tmpLegend[n])
-      }
+      for (var v = 0; v < res.data.length; v++) {
+        var tmpLegend = res.data[v].columns.slice(1)
+        for (var n = 0; n < tmpLegend.length; n++) {
+          this.legend.push(tmpLegend[n] + '[host=' + res.data[v].tags.host + ']')
+        }
 
-      // 初始化series数组，设置name type和data
-      for (var m = 0; m < this.legend.length; m++) {
-        this.series.push({
-          name: this.legend[m],
-          type: 'line',
-          data: []
-        })
-      }
+        // 初始化series数组，设置name type和data
+        var tmpSeries = []
+        for (var m = 0; m < tmpLegend.length; m++) {
+          tmpSeries.push({
+            name: tmpLegend[m] + '[host=' + res.data[v].tags.host + ']',
+            type: 'line',
+            data: []
+          })
+        }
 
-      // 处理后端返回的数据 values数据格式如： [1578621480000, 50, 50, 23, 5, 23, 4]
-      var values = res.data[0].values
-      for (var i = 0; i < values.length; i++) {
-        // 把时间戳取出 放到X轴坐标数组中
-        this.x_coordinate.push(this.formatDate(values[i][0]))
-
-        // 索引为0是时间戳，不要时间戳，从索引为1的位置开始取值
-        for (var k = 0; k < this.legend.length; k++) {
-          if (typeof (values[i][k + 1]) === 'undefined' || values[i][k + 1] === null || values[i][k + 1] === 0) {
-            this.series[k].data.push(values[i][k + 1])
-          } else {
-            this.series[k].data.push(values[i][k + 1].toFixed(2))
+        // 处理后端返回的数据 values数据格式如： [1578621480000, 50, 50, 23, 5, 23, 4]
+        var values = res.data[v].values
+        for (var i = 0; i < values.length; i++) {
+          // 把时间戳取出 放到X轴坐标数组中
+          if (v === 0) {
+            this.x_coordinate.push(this.formatDate(values[i][0]))
           }
+
+          // 索引为0是时间戳，不要时间戳，从索引为1的位置开始取值
+          for (var k = 0; k < tmpLegend.length; k++) {
+            if (typeof (values[i][k + 1]) === 'undefined' || values[i][k + 1] === null || values[i][k + 1] === 0) {
+              tmpSeries[k].data.push(values[i][k + 1])
+            } else {
+              tmpSeries[k].data.push(values[i][k + 1].toFixed(2))
+            }
+          }
+        }
+        for (var p = 0; p < tmpLegend.length; p++) {
+          this.series.push(tmpSeries[p])
         }
       }
 
@@ -67,7 +75,7 @@ export default {
     },
     drawLine () {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = echarts.init(document.getElementById('containerMemEchars'))
+      let myChart = echarts.init(document.getElementById('containerNumEchars'))
       // 绘制图表
       myChart.clear()
       myChart.setOption({
@@ -79,7 +87,6 @@ export default {
         },
         legend: {
           data: this.legend
-          // data: ['co2', 'o2', 'air_temperature', 'air_humidity', 'ground_humidity', 'illumination']
         },
         grid: {
           left: '10%',
@@ -96,10 +103,6 @@ export default {
           type: 'category',
           boundaryGap: false,
           data: this.x_coordinate,
-          // axisLabel: {
-          //   interval: 10,
-          //   rotate: 40
-          // }
           axisLine: { // ---坐标轴 轴线
             show: true, // ---是否显示
 

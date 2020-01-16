@@ -10,7 +10,10 @@ import './assets/fonts/iconfont.css'
 // 导入全局样式表
 import './assets/css/global.css'
 
+import formatEcharsData from './utils/echarsData'
+
 import VideoPlayer from 'vue-video-player'
+Vue.prototype.formatEcharsData = formatEcharsData
 require('video.js/dist/video-js.css')
 // require('vue-video-player/node_modules/video.js/dist/video-js.css')
 require('vue-video-player/src/custom-theme.css')
