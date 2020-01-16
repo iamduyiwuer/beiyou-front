@@ -22,12 +22,12 @@ export default {
   created () {
   },
   methods: {
-    async getSystemCpu (host) {
+    async getSystemCpu (host, dashboardTime) {
       this.x_coordinate = []
       this.series = []
       this.legend = []
 
-      const { data: res } = await this.$http.post('monitor/system/cpu', { 'field': ['usage_idle'], 'dashboard_time': '1h', 'host_name': host })
+      const { data: res } = await this.$http.post('monitor/system/cpu', { 'field': ['usage_idle'], 'dashboard_time': dashboardTime, 'host_name': host })
       if (res.meta.status !== 200) return this.$message.error('获取服务器cpu数据失败')
 
       if (res.data === null) return this.drawLine()

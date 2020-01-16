@@ -22,12 +22,12 @@ export default {
   created () {
   },
   methods: {
-    async getContainerNum (host) {
+    async getContainerNum (host, dashboardTime) {
       this.x_coordinate = []
       this.series = []
       this.legend = []
 
-      const { data: res } = await this.$http.post('monitor/container/num', { 'field': ['n_containers'], 'dashboard_time': '1h', 'host_name': host })
+      const { data: res } = await this.$http.post('monitor/container/num', { 'field': ['n_containers'], 'dashboard_time': dashboardTime, 'host_name': host })
       if (res.meta.status !== 200) return this.$message.error('获取服务器内存数据失败')
 
       if (res.data === null) return this.drawLine()

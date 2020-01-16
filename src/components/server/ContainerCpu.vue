@@ -22,14 +22,14 @@ export default {
   created () {
   },
   methods: {
-    async getContainerCpu (host) {
+    async getContainerCpu (host, dashboardTime) {
       this.x_coordinate = []
       this.series = []
       this.legend = []
 
       const { data: res } = await this.$http.post('monitor/container/cpu', {
         'field': ['usage_percent'],
-        'dashboard_time': '1h',
+        'dashboard_time': dashboardTime,
         'host_name': host
       })
       if (res.meta.status !== 200) return this.$message.error('获取服务器内存数据失败')

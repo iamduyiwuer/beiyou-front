@@ -9,9 +9,8 @@
     <!-- 下拉选择框 -->
     <el-card>
       <div style="margin-bottom: 20px">
-        <span>服务器列表: </span>
-        <el-select v-model="activeHost" placeholder="请选择" @change="handleCommand(activeHost)">
-          <template slot="prepend">Http://</template>
+        <span style="margin-left: 10px">服务器列表: </span>
+        <el-select suffix-icon="el-icon-date" v-model="activeHost" placeholder="请选择" @change="getEcharsData(activeHost, selectTimeValue)">
           <el-option
             v-for="(item, i) in hosts"
             :key="i"
@@ -19,6 +18,41 @@
             :value="item">
           </el-option>
         </el-select>
+
+        <!-- 开始时间 -->
+        <div class="select-time">
+          <i class="el-icon-time" style="margin-left: 10px"></i>
+          Past
+          <el-select class="dashboard-time"
+                     v-model="selectTimeValue"
+                     placeholder="请选择"
+                     @change="selectTimeChange(selectTimeValue)">
+            <el-option
+              v-for="(item, i) in selectTime"
+              :key="i"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+        </div>
+
+        <!-- 刷新间隔 -->
+        <div class="select-refresh">
+          <i class="el-icon-refresh" style="margin-left: 10px"></i>
+          <i class="el-icon-video-pause" style="margin-left: 10px"></i>
+          <el-select class="dashboard-time"
+                     v-model="selectRefreshValue"
+                     placeholder="请选择"
+                     @change="selectRefreshChange(selectRefreshValue)">
+            <el-option
+              v-for="(item, i) in selectRefresh"
+              :key="i"
+              :label="item"
+              :value="item">
+            </el-option>
+          </el-select>
+        </div>
+
       </div>
 
       <!-- echarts折线图 -->
@@ -127,7 +161,11 @@ export default {
     return {
       currentDate: new Date(),
       hosts: [],
-      activeHost: ''
+      activeHost: '',
+      selectRefresh: [ 'Paused', '5s', '10s', '15s', '30s', '60s' ],
+      selectRefreshValue: '60',
+      selectTime: ['5m', '15m', '1h', '6h', '12h', '24h', '2d', '7d', '30d'],
+      selectTimeValue: '1h'
     }
   },
   components: {
@@ -151,29 +189,34 @@ export default {
       this.hosts = res.data.host
       if (this.hosts.length > 0) {
         this.activeHost = this.hosts[1]
-        this.handleCommand(this.activeHost)
+        this.getEcharsData(this.activeHost, this.selectTimeValue)
       }
     },
-    handleCommand (host) {
+    getEcharsData (host, dashboardTime) {
       this.activeHost = host
-      this.$refs.SystemCpu.getSystemCpu(host)
-      this.$refs.SystemMem.getSystemMem(host)
-      this.$refs.SystemDisk.getSystemDisk(host)
-      this.$refs.SystemDiskio.getSystemDiskio(host)
-      this.$refs.SystemLoad.getSystemLoad(host)
-      this.$refs.ContainerCpu.getContainerCpu(host)
-      this.$refs.ContainerMem.getContainerMem(host)
-      this.$refs.ContainerNetwork.getContainerNetwork(host)
-      this.$refs.ContainerNum.getContainerNum(host)
+      this.$refs.SystemCpu.getSystemCpu(host, dashboardTime)
+      this.$refs.SystemMem.getSystemMem(host, dashboardTime)
+      this.$refs.SystemDisk.getSystemDisk(host, dashboardTime)
+      this.$refs.SystemDiskio.getSystemDiskio(host, dashboardTime)
+      this.$refs.SystemLoad.getSystemLoad(host, dashboardTime)
+      this.$refs.ContainerCpu.getContainerCpu(host, dashboardTime)
+      this.$refs.ContainerMem.getContainerMem(host, dashboardTime)
+      this.$refs.ContainerNetwork.getContainerNetwork(host, dashboardTime)
+      this.$refs.ContainerNum.getContainerNum(host, dashboardTime)
+    },
+    selectTimeChange (timeStr) {
+      this.getEcharsData(this.activeHost, this.selectTimeValue)
+    },
+    selectRefreshChange (refreshTimeStr) {
+      console.log(refreshTimeStr)
     }
   }
 }
 </script>
 
-<style scoped lang="less">
-  .el-dropdown-link {
-    cursor: pointer;
-    color: #409EFF;
+<style lang="less">
+  .dashboard-time {
+    width: 100px;
   }
 
   .el-icon-arrow-down {
@@ -185,4 +228,56 @@ export default {
     height: 100%;
     display: block;
   }
+  .select-time {
+    border: 1px solid #ccc !important;
+    padding: 0px;
+    border-radius: 4px !important;
+    width: 200px;
+    float: right;
+    .el-input__inner {
+      border: 0px;
+      -webkit-appearance: none;
+      background-color: #FFF;
+      background-image: none;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      color: #606266;
+      display: inline-block;
+      font-size: inherit;
+      height: 40px;
+      line-height: 40px;
+      outline: 0;
+      padding: 0 20px;
+      -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+      transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+      width: 100%;
+    }
+  }
+  .select-refresh {
+    border: 1px solid #ccc !important;
+    padding: 0px;
+    border-radius: 4px !important;
+    width: 200px;
+    float: right;
+    margin-right: 20px;
+    .el-input__inner {
+      border: 0px;
+      -webkit-appearance: none;
+      background-color: #FFF;
+      background-image: none;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      color: #606266;
+      display: inline-block;
+      font-size: inherit;
+      height: 40px;
+      line-height: 40px;
+      outline: 0;
+      padding: 0 20px;
+      -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+      transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+      width: 100%;
+    }
+  }
+
 </style>

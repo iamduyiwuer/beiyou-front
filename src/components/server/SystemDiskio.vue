@@ -22,14 +22,14 @@ export default {
   created () {
   },
   methods: {
-    async getSystemDiskio (host) {
+    async getSystemDiskio (host, dashboardTime) {
       this.x_coordinate = []
       this.series = []
       this.legend = []
 
       const { data: res } = await this.$http.post('monitor/system/diskio', {
         'field': ['read_bytes', 'write_bytes'],
-        'dashboard_time': '1h',
+        'dashboard_time': dashboardTime,
         'host_name': host
       })
       if (res.meta.status !== 200) return this.$message.error('获取服务器硬盘读写数据失败')

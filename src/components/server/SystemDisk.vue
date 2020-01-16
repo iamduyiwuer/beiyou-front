@@ -22,12 +22,12 @@ export default {
   created () {
   },
   methods: {
-    async getSystemDisk (host) {
+    async getSystemDisk (host, dashboardTime) {
       this.x_coordinate = []
       this.series = []
       this.legend = []
 
-      const { data: res } = await this.$http.post('monitor/system/disk', { 'field': ['used_percent'], 'dashboard_time': '1h', 'host_name': host })
+      const { data: res } = await this.$http.post('monitor/system/disk', { 'field': ['used_percent'], 'dashboard_time': dashboardTime, 'host_name': host })
       if (res.meta.status !== 200) return this.$message.error('获取服务器硬盘数据失败')
 
       if (res.data === null) return this.drawLine()
