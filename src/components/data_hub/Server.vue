@@ -10,7 +10,7 @@
     <el-card>
       <div style="margin-bottom: 20px">
         <span style="margin-left: 10px">服务器列表: </span>
-        <el-select suffix-icon="el-icon-date" v-model="activeHost" placeholder="请选择" @change="getEcharsData(activeHost, selectTimeValue)">
+        <el-select suffix-icon="el-icon-date" v-model="activeHost" placeholder="请选择" @change="resetTimer()">
           <el-option
             v-for="(item, i) in hosts"
             :key="i"
@@ -38,8 +38,8 @@
 
         <!-- 刷新间隔 -->
         <div class="select-refresh">
-          <i class="el-icon-refresh" style="margin-left: 10px"></i>
-          <i class="el-icon-video-pause" style="margin-left: 10px"></i>
+          <i v-if="see" class="el-icon-refresh" style="margin-left: 10px"></i>
+          <i v-if="!see" class="el-icon-video-pause" style="margin-left: 10px"></i>
           <el-select class="dashboard-time"
                      v-model="selectRefreshValue"
                      placeholder="请选择"
@@ -163,9 +163,13 @@ export default {
       hosts: [],
       activeHost: '',
       selectRefresh: [ 'Paused', '5s', '10s', '15s', '30s', '60s' ],
-      selectRefreshValue: '60',
+      selectRefreshValue: '60s',
       selectTime: ['5m', '15m', '1h', '6h', '12h', '24h', '2d', '7d', '30d'],
-      selectTimeValue: '1h'
+      selectTimeValue: '1h',
+      timer: '',
+      value: 0,
+      intervalTimer: 60000,
+      see: true
     }
   },
   components: {
@@ -189,10 +193,13 @@ export default {
       this.hosts = res.data.host
       if (this.hosts.length > 0) {
         this.activeHost = this.hosts[1]
-        this.getEcharsData(this.activeHost, this.selectTimeValue)
+        this.startTimer()
       }
     },
     getEcharsData (host, dashboardTime) {
+      console.log(new Date())
+      console.log(this.selectTimeValue)
+      console.log(this.activeHost)
       this.activeHost = host
       this.$refs.SystemCpu.getSystemCpu(host, dashboardTime)
       this.$refs.SystemMem.getSystemMem(host, dashboardTime)
@@ -205,10 +212,47 @@ export default {
       this.$refs.ContainerNum.getContainerNum(host, dashboardTime)
     },
     selectTimeChange (timeStr) {
-      this.getEcharsData(this.activeHost, this.selectTimeValue)
+      this.resetTimer()
     },
     selectRefreshChange (refreshTimeStr) {
-      console.log(refreshTimeStr)
+      if (refreshTimeStr === 'Paused') {
+        this.see = false
+      } else {
+        this.see = true
+      }
+      this.resetTimer()
+    },
+    // 开启定时器
+    startTimer () {
+      this.getEcharsData(this.activeHost, this.selectTimeValue) // 首先立即请求一次数据，再创建定时器
+      this.timer = setInterval(this.getEcharsData, this.intervalTimer, this.activeHost, this.selectTimeValue)
+    },
+    // 重置定时器
+    resetTimer () {
+      this.stopTimer()
+      switch (this.selectRefreshValue) {
+        case '60s':
+          break
+        case '30s':
+          this.intervalTimer = 30000
+          break
+        case '15s':
+          this.intervalTimer = 15000
+          break
+        case '10s':
+          this.intervalTimer = 10000
+          break
+        case '5s':
+          this.intervalTimer = 5000
+          break
+        default:
+          this.intervalTimer = 3600 * 24 * 365 // 非常大的一个数目的是为了显示出暂停的效果
+      }
+      this.getEcharsData(this.activeHost, this.selectTimeValue) // 立即请求一次数据
+      this.timer = setInterval(this.getEcharsData, this.intervalTimer, this.activeHost, this.selectTimeValue)
+    },
+    stopTimer () {
+      clearInterval(this.timer)
     }
   }
 }
