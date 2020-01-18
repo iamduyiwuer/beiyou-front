@@ -7,6 +7,17 @@
     </el-breadcrumb>
 
     <el-card>
+      <div class="block" style="margin: 0px 0px 10px 20px">
+        <span class="demonstration">默认</span>
+        <el-date-picker
+          clearable
+          v-model="dashboardTime"
+          type="datetimerange"
+          range-separator="至"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间" value-format="timestamp" @change="tst">
+        </el-date-picker>
+      </div>
       <div id="myChartq" :style="{width: '100%', height: '500px'}"></div>
     </el-card>
   </div>
@@ -23,17 +34,70 @@ require('echarts/lib/component/legend')
 export default {
   data () {
     return {
+      dashboardTime: [],
       x_coordinate: [],
       series: [],
       legend: []
     }
   },
   mounted () {
-    this.getHistroy()
+    // this.getHistroy()
     // this.drawLine()
   },
   methods: {
-    getlegend (key) {
+    tst () {
+      console.log(11)
+      console.log(this.dashboardTime[0])
+      console.log(this.dashboardTime[1])
+      this.getHistory()
+    },
+    async getHistory () {
+      this.x_coordinate = []
+      this.series = []
+      this.legend = []
+
+      const { data: res } = await this.$http.post('data/history', {
+        'fields': ['co2', 'o2', 'air_temperature', 'air_humidity', 'ground_humidity', 'illumination'],
+        'start_time': this.dashboardTime[0],
+        'end_time': this.dashboardTime[1],
+        'period': '1m',
+        'group_func': 'MAX'
+      })
+      if (res.meta.status !== 200) return this.$message.error('获取历史数据失败')
+
+      // 获取legend字段： 折线的名称
+      // this.legend = res.data.Results[0].Series[0].columns.slice(1)
+      var tmpLegend = res.data.Results[0].Series[0].columns.slice(1)
+      for (var n = 0; n < tmpLegend.length; n++) {
+        this.legend.push(this.getLegend(tmpLegend[n]))
+      }
+
+      // 初始化series数组，设置name type和data
+      for (var m = 0; m < this.legend.length; m++) {
+        this.series.push({
+          name: this.legend[m],
+          type: 'line',
+          data: []
+        })
+      }
+
+      // 处理后端返回的数据 values数据格式如： [1578621480000, 50, 50, 23, 5, 23, 4]
+      var values = res.data.Results[0].Series[0].values
+      for (var i = 0; i < values.length; i++) {
+        // 把时间戳取出 放到X轴坐标数组中
+        // this.x_coordinate.push(values[i][0])
+        this.x_coordinate.push(this.formatDate(values[i][0]))
+
+        // 索引为0是时间戳，不要时间戳，从索引为1的位置开始取值
+        for (var k = 0; k < this.legend.length; k++) {
+          this.series[k].data.push(values[i][k + 1])
+        }
+      }
+
+      // 画折线图
+      this.drawLine()
+    },
+    getLegend (key) {
       switch (key) {
         case 'co2':
           return '二氧化碳'
@@ -51,9 +115,10 @@ export default {
     },
     drawLine () {
       // 基于准备好的dom，初始化echarts实例
-      let myChartq = echarts.init(document.getElementById('myChartq'))
+      let myChart = echarts.init(document.getElementById('myChartq'))
       // 绘制图表
-      myChartq.setOption({
+      myChart.clear()
+      myChart.setOption({
         title: {
           text: ''
         },
@@ -120,50 +185,6 @@ export default {
         series: this.series
       })
     },
-
-    async getHistroy () {
-      const { data: res } = await this.$http.post('data/history', {
-        'fields': ['co2', 'o2', 'air_temperature', 'air_humidity', 'ground_humidity', 'illumination'],
-        'start_time': 1578621508000,
-        'end_time': 1578624186000,
-        'period': '1m',
-        'group_func': 'MAX'
-      })
-      if (res.meta.status !== 200) return this.$message.error('获取历史数据失败')
-
-      // 获取legend字段： 折线的名称
-      // this.legend = res.data.Results[0].Series[0].columns.slice(1)
-      var tmpLegend = res.data.Results[0].Series[0].columns.slice(1)
-      for (var n = 0; n < tmpLegend.length; n++) {
-        this.legend.push(this.getlegend(tmpLegend[n]))
-      }
-
-      // 初始化series数组，设置name type和data
-      for (var m = 0; m < this.legend.length; m++) {
-        this.series.push({
-          name: this.legend[m],
-          type: 'line',
-          data: []
-        })
-      }
-
-      // 处理后端返回的数据 values数据格式如： [1578621480000, 50, 50, 23, 5, 23, 4]
-      var values = res.data.Results[0].Series[0].values
-      for (var i = 0; i < values.length; i++) {
-        // 把时间戳取出 放到X轴坐标数组中
-        // this.x_coordinate.push(values[i][0])
-        this.x_coordinate.push(this.formatDate(values[i][0]))
-
-        // 索引为0是时间戳，不要时间戳，从索引为1的位置开始取值
-        for (var k = 0; k < this.legend.length; k++) {
-          this.series[k].data.push(values[i][k + 1])
-        }
-      }
-
-      // 画折线图
-      this.drawLine()
-    },
-
     formatDate (timestampInt) {
       var date = new Date(timestampInt)
       var YY = date.getFullYear() + '-'

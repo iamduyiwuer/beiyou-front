@@ -276,7 +276,7 @@ export default {
     border: 1px solid #ccc !important;
     padding: 0px;
     border-radius: 4px !important;
-    width: 200px;
+    width: 170px;
     float: right;
     .el-input__inner {
       border: 0px;
@@ -291,17 +291,17 @@ export default {
       height: 40px;
       line-height: 40px;
       outline: 0;
-      padding: 0 20px;
+      padding: 0px 2px 0px 10px !important;
       -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
       transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-      width: 100%;
+      width: 70px;
     }
   }
   .select-refresh {
     border: 1px solid #ccc !important;
     padding: 0px;
     border-radius: 4px !important;
-    width: 200px;
+    width: 130px;
     float: right;
     margin-right: 20px;
     .el-input__inner {
@@ -317,10 +317,11 @@ export default {
       height: 40px;
       line-height: 40px;
       outline: 0;
-      padding: 0 20px;
+      /*padding: 0 2px !important;*/
+      padding: 0px 2px 0px 10px !important;
       -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
       transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-      width: 100%;
+      width: 60px;
     }
   }
 
