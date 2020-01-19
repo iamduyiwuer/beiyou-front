@@ -1,66 +1,67 @@
 <template>
-    <el-container class="home-container">
-      <!-- 头部区域 -->
-      <el-header>
-        <div>
-<!--          <img src="../assets/homelogo.png" alt="">-->
-          <span>管理</span>
-        </div>
-        <el-button type="info" @click="logout">退出</el-button></el-header>
-      <!-- 主题区域 -->
-      <el-container>
-        <!-- 侧边栏 -->
-        <el-aside :width="isCollapse ? '64px' : '200px'">
-          <div class="toggle-button" @click="toggleCollapse">|||</div>
-          <!-- 侧边栏菜单区域 -->
-          <el-menu
-            background-color="#333744"
-            text-color="#fff"
-            active-text-color="#409EFF"
-            :unique-opened="true"
-            :collapse="isCollapse"
-            :collapse-transition="false"
-            :router="true" :default-active="activePath">
-            <el-menu-item :index="'/'+'index'" @click="saveNavState('/index')">
+  <el-container class="home-container">
+    <!-- 头部区域 -->
+    <el-header>
+      <div>
+        <img class="logo" src="../assets/logo.png" alt="">
+        <span>管理</span>
+      </div>
+      <el-button type="info" @click="logout">退出</el-button>
+    </el-header>
+    <!-- 主题区域 -->
+    <el-container>
+      <!-- 侧边栏 -->
+      <el-aside :width="isCollapse ? '64px' : '200px'">
+        <div class="toggle-button" @click="toggleCollapse">|||</div>
+        <!-- 侧边栏菜单区域 -->
+        <el-menu
+          background-color="#333744"
+          text-color="#fff"
+          active-text-color="#409EFF"
+          :unique-opened="true"
+          :collapse="isCollapse"
+          :collapse-transition="false"
+          :router="true" :default-active="activePath">
+          <el-menu-item :index="'/'+'index'" @click="saveNavState('/index')">
+            <template slot="title">
+              <!-- 图标 -->
+              <i class="el-icon-s-home"></i>
+              <!-- 文本 -->
+              <span>首页</span>
+            </template>
+          </el-menu-item>
+          <!-- 一级菜单 -->
+          <el-submenu :index="item.id + ''" v-for="item in menuList" :key="item.id">
+            <!-- 一级菜单的模板区 -->
+            <template slot="title">
+              <!-- 图标 -->
+              <i :class="iconsObj[item.id]"></i>
+              <!-- 文本 -->
+              <span>{{item.auth_name}}</span>
+            </template>
+            <!-- 二级菜单 -->
+            <el-menu-item
+              :index="'/' + subItem.path"
+              v-for="subItem in item.children"
+              :key="subItem.id"
+              @click="saveNavState('/' + subItem.path)">
               <template slot="title">
                 <!-- 图标 -->
-                <i class="el-icon-s-home"></i>
+                <i class="el-icon-menu"></i>
                 <!-- 文本 -->
-                <span>首页</span>
+                <span>{{ subItem.auth_name }}</span>
               </template>
             </el-menu-item>
-            <!-- 一级菜单 -->
-            <el-submenu :index="item.id + ''" v-for="item in menuList" :key="item.id">
-              <!-- 一级菜单的模板区 -->
-              <template slot="title">
-                <!-- 图标 -->
-                <i :class="iconsObj[item.id]"></i>
-                <!-- 文本 -->
-                <span>{{item.auth_name}}</span>
-              </template>
-              <!-- 二级菜单 -->
-              <el-menu-item
-                :index="'/' + subItem.path"
-                v-for="subItem in item.children"
-                :key="subItem.id"
-                @click="saveNavState('/' + subItem.path)">
-                <template slot="title">
-                  <!-- 图标 -->
-                  <i class="el-icon-menu"></i>
-                  <!-- 文本 -->
-                  <span>{{ subItem.auth_name }}</span>
-                </template>
-              </el-menu-item>
-            </el-submenu>
-          </el-menu>
-        </el-aside>
-        <!-- 右侧内容主体 -->
-        <el-main id="main-box">
-          <!-- 路由占位符 -->
-          <router-view></router-view>
-        </el-main>
-      </el-container>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <!-- 右侧内容主体 -->
+      <el-main id="main-box">
+        <!-- 路由占位符 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
+  </el-container>
 </template>
 
 <script>
@@ -112,10 +113,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .home-container{
+  .home-container {
     height: 100%;
   }
-  .el-header{
+
+  .el-header {
     background-color: #373D41;
     display: flex;
     justify-content: space-between;
@@ -123,29 +125,42 @@ export default {
     align-items: center;
     color: #fff;
     font-size: 20px;
-    > div{
+
+    > div {
       display: flex;
       align-items: center;
-      span{
+
+      span {
         margin-left: 15px;
       }
     }
   }
 
-  .el-aside{
+  .logo {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-left: 20px;
+  }
+
+  .el-aside {
     background-color: #333744;
-    .el-menu{
+
+    .el-menu {
       border-right: none;
     }
   }
-  .el-main{
+
+  .el-main {
     background-color: #EAEDF1;
     padding: 0;
   }
-  .iconfont{
+
+  .iconfont {
     margin-right: 10px;
   }
-  .toggle-button{
+
+  .toggle-button {
     background-color: #4A5064;
     font-size: 10px;
     line-height: 24px;

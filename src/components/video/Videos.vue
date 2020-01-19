@@ -7,7 +7,9 @@
     </el-breadcrumb>
     <el-card>
       <el-row :gutter="20" v-for="(item1, i1) in vodeos" :key="i1">
-        <h1><el-button type="info" @click="show2 = !show2">{{item1.code}}</el-button></h1>
+        <h1>
+          <el-button type="info" @click="show2 = !show2">{{item1.code}}</el-button>
+        </h1>
 
         <el-col :span="8" v-for="(item2, i2) in item1.videos" :key="i2">
           <video-player class="video-player vjs-custom-skin"
@@ -26,8 +28,7 @@
 </template>
 
 <script>
-export default {
-}
+export default {}
 </script>
 
 <style scoped>

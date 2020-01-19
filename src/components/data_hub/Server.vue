@@ -162,7 +162,7 @@ export default {
       currentDate: new Date(),
       hosts: [],
       activeHost: '',
-      selectRefresh: [ 'Paused', '5s', '10s', '15s', '30s', '60s' ],
+      selectRefresh: ['Paused', '5s', '10s', '15s', '30s', '60s'],
       selectRefreshValue: '60s',
       selectTime: ['5m', '15m', '1h', '6h', '12h', '24h', '2d', '7d', '30d'],
       selectTimeValue: '1h',
@@ -272,12 +272,14 @@ export default {
     height: 100%;
     display: block;
   }
+
   .select-time {
     border: 1px solid #ccc !important;
     padding: 0px;
     border-radius: 4px !important;
     width: 170px;
     float: right;
+
     .el-input__inner {
       border: 0px;
       -webkit-appearance: none;
@@ -292,11 +294,12 @@ export default {
       line-height: 40px;
       outline: 0;
       padding: 0px 2px 0px 10px !important;
-      -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-      transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+      -webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+      transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
       width: 70px;
     }
   }
+
   .select-refresh {
     border: 1px solid #ccc !important;
     padding: 0px;
@@ -304,6 +307,7 @@ export default {
     width: 130px;
     float: right;
     margin-right: 20px;
+
     .el-input__inner {
       border: 0px;
       -webkit-appearance: none;
@@ -319,8 +323,8 @@ export default {
       outline: 0;
       /*padding: 0 2px !important;*/
       padding: 0px 2px 0px 10px !important;
-      -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-      transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+      -webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+      transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
       width: 60px;
     }
   }
