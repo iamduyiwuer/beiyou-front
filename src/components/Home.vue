@@ -7,7 +7,7 @@
         <span>管理</span>
       </div>
       <div @click="drawer = true">
-        <el-badge :value="12" class="alert">
+        <el-badge :value="1" class="alert">
           <i class="el-icon-message-solid"></i>
           <!--        <el-button size="small">告警</el-button>-->
         </el-badge>
@@ -99,8 +99,8 @@ export default {
         '127': 'iconfont icon-tijikongjian', // 数据中心
         '102': 'iconfont icon-danju', // 订单管理
         '145': 'iconfont icon-baobiao', // 报表
-        '130': 'el-icon-video-camera', // 监控视频
-        '140': 'el-icon-monitor' // 监控视频
+        '140': 'el-icon-video-camera' // 监控视频
+        // '140': 'el-icon-monitor' // 监控视频
       },
       // 是否折叠
       isCollapse: false,
@@ -261,8 +261,6 @@ export default {
       return row.ground_humidity ? '是' : '-'
     },
     formatDate (row) {
-      console.log(999)
-      console.log(row.code)
       var dateee = new Date(row.time).toJSON()
       var date = new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
       return date

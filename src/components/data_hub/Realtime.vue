@@ -39,9 +39,7 @@ export default {
   },
   methods: {
     tableRowClassName ({ row, rowIndex }) {
-      console.log(row['co2'])
       if (row['co2'] > 0.01) {
-        console.log(8888)
         return 'warning-row'
       }
       // if (row['co2'] < 0.01 || row['illumination'] < 2 || row['ground_humidity'] < 3) {

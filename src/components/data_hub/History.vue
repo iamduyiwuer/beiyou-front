@@ -46,9 +46,6 @@ export default {
   },
   methods: {
     tst () {
-      console.log(11)
-      console.log(this.dashboardTime[0])
-      console.log(this.dashboardTime[1])
       this.getHistory()
     },
     async getHistory () {
@@ -67,6 +64,7 @@ export default {
 
       // 获取legend字段： 折线的名称
       // this.legend = res.data.Results[0].Series[0].columns.slice(1)
+      if (res.data === null) return this.$message.info('没有数据')
       var tmpLegend = res.data.Results[0].Series[0].columns.slice(1)
       for (var n = 0; n < tmpLegend.length; n++) {
         this.legend.push(this.getLegend(tmpLegend[n]))

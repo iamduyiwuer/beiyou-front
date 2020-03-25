@@ -197,9 +197,6 @@ export default {
       }
     },
     getEcharsData (host, dashboardTime) {
-      console.log(new Date())
-      console.log(this.selectTimeValue)
-      console.log(this.activeHost)
       this.activeHost = host
       this.$refs.SystemCpu.getSystemCpu(host, dashboardTime)
       this.$refs.SystemMem.getSystemMem(host, dashboardTime)
