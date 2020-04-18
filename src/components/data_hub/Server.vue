@@ -197,6 +197,9 @@ export default {
       }
     },
     getEcharsData (host, dashboardTime) {
+      if (host === '' || host === null || host === undefined) {
+        return
+      }
       this.activeHost = host
       this.$refs.SystemCpu.getSystemCpu(host, dashboardTime)
       this.$refs.SystemMem.getSystemMem(host, dashboardTime)

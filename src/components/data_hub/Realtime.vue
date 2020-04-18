@@ -17,7 +17,7 @@
         <el-table-column prop="time" sortable label="更新时间" :formatter="formatDate"></el-table-column>
         <el-table-column prop="co2" sortable label="二氧化碳"> </el-table-column>
         <el-table-column prop="o2" sortable label="氧气"> </el-table-column>
-        <el-table-column prop="air_temperature" sortable label="空气温度"> </el-table-column>
+        <el-table-column prop="temperature" sortable label="空气温度"> </el-table-column>
         <el-table-column prop="air_humidity" sortable label="空气湿度"> </el-table-column>
         <el-table-column prop="ground_humidity" sortable label="土壤湿度"> </el-table-column>
         <el-table-column prop="illumination" sortable label="光照度"> </el-table-column>
