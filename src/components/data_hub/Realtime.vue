@@ -31,21 +31,28 @@
 export default {
   data () {
     return {
-      realtimeData: []
+      realtimeData: [],
+      timer: '',
+      intervalTimer: 5000
     }
   },
   created () {
     this.getRealtimeData()
+  },
+  mounted () {
+    this.startTimer()
   },
   methods: {
     tableRowClassName ({ row, rowIndex }) {
       if (row['co2'] > 0.01) {
         return 'warning-row'
       }
-      // if (row['co2'] < 0.01 || row['illumination'] < 2 || row['ground_humidity'] < 3) {
-      //   return 'warning-row'
-      // }
       return ''
+    },
+    // 开启定时器
+    startTimer () {
+      // this.getRealtimeData() // 首先立即请求一次数据，再创建定时器
+      this.timer = setInterval(this.getRealtimeData, this.intervalTimer)
     },
     async getRealtimeData () {
       const { data: res } = await this.$http.get('data/realtime')

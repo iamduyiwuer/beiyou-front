@@ -7,7 +7,7 @@
         <span>管理</span>
       </div>
       <div @click="drawer = true">
-        <el-badge :value="1" class="alert">
+        <el-badge :value="12" class="alert">
           <i class="el-icon-message-solid"></i>
           <!--        <el-button size="small">告警</el-button>-->
         </el-badge>

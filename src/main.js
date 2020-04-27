@@ -24,9 +24,8 @@ Vue.use(VideoPlayer)
 // Vue.prototype.$echarts = echarts
 
 // 设置 axios 请求根路径
-// axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
-// axios.defaults.baseURL = 'http://10.0.0.131:9001/'
-axios.defaults.baseURL = 'http://127.0.0.1:9001/'
+axios.defaults.baseURL = 'http://10.0.0.131:9001/'
+// axios.defaults.baseURL = 'http://127.0.0.1:9001/'
 
 // 拦截器，对每个请求进行预处理
 axios.interceptors.request.use(config => {
